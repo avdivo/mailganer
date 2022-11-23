@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Список рассылок</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Список рассылок</h1>
+  </div>
+
+  <div class="container">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Название</th>
+          <th scope="col">Статус</th>
+          <th scope="col">Дата</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>День рождения скоро</td>
+          <td>Ожидание</td>
+          <td>25.12.2022</td>
+        </tr>
+        <tr>
+          <td>Купи подарок</td>
+          <td>Выполнено</td>
+          <td>24.11.2022</td>
+        </tr>
+      </tbody>
+    </table>
+    <a href="{% url 'new' %}">
+      <button type="button" class="btn btn-primary btn-lg float-sm-right">Новая рассылка</button>
+    </a>
+  </div>
+</body>
+</html>
