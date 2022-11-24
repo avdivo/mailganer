@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.conf.urls import url
 
 from .views import mailing_list_page, new_list
