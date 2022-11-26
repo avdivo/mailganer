@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from .forms import NewListForm
+from .services import send_group
 
 
 def mailing_list_page(request):
@@ -14,17 +15,11 @@ def mailing_list_page(request):
 def new_list(request):
     """Вывод формы для создания новой рассылки"""
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
+        # Получены данные для создания новой рассылки
         form = NewListForm(request.POST)
-        # check whether it's valid:
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect('/thanks/')
-
-        # if a GET (or any other method) we'll create a blank form
+            send_group(form.save(commit=True))
+            return HttpResponseRedirect('list')
     else:
         form = NewListForm()
-
     return render(request, 'new_list.html', {'form': form})
