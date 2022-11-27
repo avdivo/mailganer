@@ -16,7 +16,7 @@ def mailing_list_page(request):
     """Вывод страницы со списком рассылок отсортированных по дате и кнопкой добавления новой рассылки"""
     tzname = None
     if 'tzname' in request.POST:
-        print(request.POST['tzname'], '----------------------')
+        print(request.POST['tzname'], '------------------')
         tzname = request.POST['tzname']
         request.session['tzname'] = tzname
     if not 'tzname' in request.session:
