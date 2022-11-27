@@ -2,25 +2,24 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script>
       $(document).ready( function() {
-        const tzname = $('#tzname').val();
-        if (tzname == ''){
-          $('#tzname').val(Intl.DateTimeFormat().resolvedOptions().tzname);
-          $("#set_tzname").submit();
+        current_tz = Intl.DateTimeFormat().resolvedOptions().timeZone
+        tzname = $('#tzname').val();
+        if (current_tz != tzname) {
+          $('#tzname').val(current_tz);
+          $('#set_tzname').submit();
         }
-
       });
-</script>
+    </script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
     <title>Список рассылок</title>
 </head>
+
 <body>
   <form action="{% url 'list' %}" method="post" id="set_tzname">
     {% csrf_token %}
-    {{ tzname }}
     <input type="hidden" id="tzname" name='tzname' value="{{ tzname }}">
   </form>
   <div class="container">
@@ -34,31 +33,23 @@
           <th scope="col">Название</th>
           <th scope="col">Статус</th>
           <th scope="col">Дата</th>
+          <th scope="col">Группа получателей</th>
+          <th scope="col">Шаблон документа</th>
         </tr>
       </thead>
       <tbody>
+        {% for mailing in table %}
         <tr>
-          <td>День рождения скоро</td>
-          <td>Ожидание</td>
-          <td>25.12.2022</td>
+          <td>{{ mailing.name }}</td>
+          <td>{{ mailing.status }}</td>
+          <td>{{ mailing.date }}</td>
+          <td>{{ mailing.group }}</td>
+          <td>{{ mailing.sample }}</td>
         </tr>
-        <tr>
-          <td>Купи подарок</td>
-          <td>Выполнено</td>
-          <td>24.11.2022</td>
-        </tr>
+        {% endfor %}
       </tbody>
     </table>
 
-    {% for mailing in mailing_list %}
-<!--    {{ mailing }}-->
-    <tr>
-      <td>{{ mailing.name}}</td>
-      <td>{{ mailing.date_of_completion }}</td>
-      <td></td>
-    </tr>
-    {% endfor %}
-<!--{{ now_datetime }}-->
     <a href="{% url 'new' %}">
       <button type="button" class="btn btn-primary btn-lg float-sm-right">Новая рассылка</button>
     </a>

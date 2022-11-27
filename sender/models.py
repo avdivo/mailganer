@@ -26,9 +26,6 @@ class MailingList(models.Model):
     group = models.ForeignKey(Group, blank=False, default=0, on_delete=models.DO_NOTHING, verbose_name='Группа получателей')
     sample = models.ForeignKey(Sample, blank=False, default=0, on_delete=models.DO_NOTHING, verbose_name='Шаблон письма')
 
-    def __unicode__(self):
-        return '{name} {date}'.format(name=self.name, date=self.date_of_completion)
-
 
 class Report(models.Model):
     """Отчет о письмах каждому подписчику каждой рассылки"""
