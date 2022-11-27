@@ -2,11 +2,26 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+      $(document).ready( function() {
+        const tzname = $('#tzname').val();
+        if (tzname == ''){
+          $('#tzname').val(Intl.DateTimeFormat().resolvedOptions().tzname);
+          $("#set_tzname").submit();
+        }
+      });
+</script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <title>Список рассылок</title>
 </head>
 <body>
+  <form action="{% url 'list' %}" method="post" id="set_tzname">
+    {% csrf_token %}
+    {{ tzname }}
+    <input type="hidden" id="tzname" name='tzname' value="{{ tzname }}">
+  </form>
   <div class="container">
     <h1>Список рассылок</h1>
   </div>
@@ -33,9 +48,20 @@
         </tr>
       </tbody>
     </table>
+
+    {% for mailing in mailing_list %}
+<!--    {{ mailing }}-->
+    <tr>
+      <td>{{ mailing.name}}</td>
+      <td>{{ mailing.date_of_completion }}</td>
+      <td></td>
+    </tr>
+    {% endfor %}
+<!--{{ now_datetime }}-->
     <a href="{% url 'new' %}">
       <button type="button" class="btn btn-primary btn-lg float-sm-right">Новая рассылка</button>
     </a>
   </div>
+
 </body>
 </html>
