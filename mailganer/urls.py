@@ -16,39 +16,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from sender.views import open_mail
+
 urlpatterns = [
+    url(r'^open/(?P<id>.+)', open_mail, name='open'),
     url(r'^admin/', admin.site.urls),
     url('list', include('sender.urls')),
-
 ]
-
-# import time
-# from .tasks import send_report
-# from django.utils import timezone
-# from datetime import timedelta
-# from mailganer.celery import celery_app
-#
-# # send_report.apply_async([5], eta=timezone.now() + timedelta(minutes=5))
-# # send_report.apply_async([4], eta=timezone.now() + timedelta(minutes=4))
-# # send_report.apply_async([3], eta=timezone.now() + timedelta(minutes=3))
-# g = send_report.apply_async([1], eta=timezone.now() + timedelta(seconds=5))
-# print('==============================', g.id)
-# celery_app.control.revoke(g.id, terminate=True)
-# send_report.apply_async([g.id], eta=timezone.now() + timedelta(seconds=5))
-# send_report.apply_async([3], eta=timezone.now() + timedelta(seconds=5))
-#
-# send_report.apply_async([4], eta=timezone.now() + timedelta(seconds=5))
-# send_report.apply_async([5], eta=timezone.now() + timedelta(seconds=5))
-# send_report.apply_async([6], eta=timezone.now() + timedelta(seconds=5))
-#
-# send_report.apply_async([201], eta=timezone.now() + timedelta(seconds=5))
-# send_report.apply_async([202], eta=timezone.now() + timedelta(seconds=5))
-# send_report.apply_async([203], eta=timezone.now() + timedelta(seconds=5))
-#
-# send_report.apply_async([204], eta=timezone.now() + timedelta(seconds=5))
-# send_report.apply_async([205], eta=timezone.now() + timedelta(seconds=5))
-# send_report.apply_async([206], eta=timezone.now() + timedelta(seconds=5))
-#
-# send_report.apply_async([207], eta=timezone.now() + timedelta(seconds=5))
-# send_report.apply_async([208], eta=timezone.now() + timedelta(seconds=5))
-# send_report.apply_async([209], eta=timezone.now() + timedelta(seconds=5))

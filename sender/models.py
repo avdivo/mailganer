@@ -29,10 +29,11 @@ class MailingList(models.Model):
 
 class Report(models.Model):
     """Отчет о письмах каждому подписчику каждой рассылки"""
-    mailing_list = models.ForeignKey(MailingList, blank=False, on_delete=models.CASCADE, verbose_name='Рассылка')
-    subscriber = models.ForeignKey(Subscriber, blank=False, on_delete=models.DO_NOTHING, verbose_name='Получатель')
-    sent = models.BooleanField(default=False, blank=False, verbose_name='Письмо отправлено')
-    open = models.DateTimeField(default=None, verbose_name='Когда письмо открыто')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    mailing_list = models.ForeignKey(MailingList, on_delete=models.CASCADE, verbose_name='Рассылка')
+    subscriber = models.ForeignKey(Subscriber, on_delete=models.DO_NOTHING, verbose_name='Получатель')
+    sent = models.BooleanField(default=False, verbose_name='Письмо отправлено')
+    open = models.DateTimeField(null=True, verbose_name='Когда письмо открыто')
 
     def __unicode__(self):
         report = 'Получателю ({s}) рассылка {m} отправлена, письмо '.format(s=self.subscriber, m=self.mailing_list.name)

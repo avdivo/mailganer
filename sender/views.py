@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.http import HttpResponseRedirect
+
+import os
+
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.utils import timezone
 
+from django.conf import settings
 from .forms import NewListForm
 from .models import MailingList
+from sender.models import Report
 from .services import send_group, set_tzname
 
 
@@ -15,7 +20,7 @@ def mailing_list_page(request):
     # Установка часового пояса
     tzname = set_tzname(request)
 
-    mailing_list = MailingList.objects.order_by('date_of_completion')  # Чтение списка рассылок
+    mailing_list = MailingList.objects.order_by('-date_of_completion')  # Чтение списка рассылок
     # Подготовка словаря для вывода таблицы рассылок
     now_datetime = timezone.now()
     table = []
@@ -44,3 +49,13 @@ def new_list(request):
     else:
         form = NewListForm()
     return render(request, 'new_list.html', {'form': form})
+
+
+def open_mail(request, id):
+    """Подтверждение открытия письма клиентом
+    Открытие письма потребует загрузки изображения, которая будет приводить к открытию этой функции"""
+    image = open(os.path.join(settings.STATIC_ROOT, 'img/pixel.jpg'), 'rb')
+    report = Report.objects.get(id=id)
+    report.open = timezone.now()
+    report.save()
+    return HttpResponse(image.read(), status=201)

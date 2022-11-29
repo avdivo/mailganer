@@ -26,7 +26,13 @@
     <h1>Список рассылок</h1>
   </div>
 
+
   <div class="container">
+
+    <a href="{% url 'new' %}">
+      <button type="button" class="btn btn-primary btn-lg float-sm-right">Новая рассылка</button>
+    </a>
+
     <table class="table table-hover">
       <thead>
         <tr>
@@ -50,9 +56,6 @@
       </tbody>
     </table>
 
-    <a href="{% url 'new' %}">
-      <button type="button" class="btn btn-primary btn-lg float-sm-right">Новая рассылка</button>
-    </a>
   </div>
 
 </body>
