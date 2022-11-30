@@ -12,6 +12,6 @@
         А пока, приглашаем Вас посетить нас магазин и выбрать себе подарок. </p>
     <p>Если Вы успеете это сделать до {{ for_mail.deadline }} то получите скидку на
     подарок.</p>
-    <img src="{% url 'open' for_mail.id %}">
+    <img src="{{ site_url }}{% url 'open' for_mail.open %}.jpg">
 </body>
 </html>

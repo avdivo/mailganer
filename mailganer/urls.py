@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """mailganer URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -19,7 +20,8 @@ from django.contrib import admin
 from sender.views import open_mail
 
 urlpatterns = [
-    url(r'^open/(?P<id>.+)', open_mail, name='open'),
-    url(r'^admin/', admin.site.urls),
-    url('list', include('sender.urls')),
+    url(r'^mail/open/(?P<id>.+)', open_mail, name='open'),
+    url(r'^mail/admin/', admin.site.urls),
+    url('mail/list', include('sender.urls')),
 ]
+

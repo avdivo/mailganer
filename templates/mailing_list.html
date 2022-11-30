@@ -46,11 +46,13 @@
       <tbody>
         {% for mailing in table %}
         <tr>
-          <td>{{ mailing.name }}</td>
-          <td>{{ mailing.status }}</td>
-          <td>{{ mailing.date }}</td>
-          <td>{{ mailing.group }}</td>
-          <td>{{ mailing.sample }}</td>
+          <td><a href="{% url 'report' mailing.id %}">
+            {{ mailing.name }}
+          </a></td>
+            <td>{{ mailing.status }}</td>
+            <td>{{ mailing.date }}</td>
+            <td>{{ mailing.group }}</td>
+            <td>{{ mailing.sample }}</td>
         </tr>
         {% endfor %}
       </tbody>

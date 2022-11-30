@@ -10,10 +10,11 @@ from .utils import send_email
 
 
 @celery_app.task
-def send_mail(subscriber_id, list_id):
+def send_mail(subscriber_id, list_id, site_url):
     """Задание для Celery для отправки письма получателю с заданным id и по заданному шаблону"""
     subscriber = Subscriber.objects.get(id=subscriber_id)  # Запрос данных получателя
     new_list = MailingList.objects.get(id=list_id)  # Запрос данных рассылки
+
     new_report = Report.objects.create(mailing_list=new_list, subscriber=subscriber)
 
     # Подготовка данных для письма.
@@ -25,11 +26,11 @@ def send_mail(subscriber_id, list_id):
     for_mail['deadline'] = new_list.date_of_completion + datetime.timedelta(days=7)
     for_mail['open'] = new_list.id
     sample = 'samples/' + new_list.sample.sample
-    message = get_template(sample).render(locals())  # Создаем html сообщение из шаблона
 
+    message = get_template(sample).render(locals())  # Создаем html сообщение из шаблона
     is_email = send_email(message, [subscriber.email])  # Отправляем письмо и получаем успешность
     if is_email:
-        # Если письмо отправлено успешно
+        # Если письмо отп   равлено успешно
         print('--------------------------- Письмо отправлено успешно ------------------------------')
         new_report.sent = True  # Подтверждение отправки письма
         new_report.save()

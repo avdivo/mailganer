@@ -23,8 +23,10 @@ class MailingList(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=32, verbose_name='Название рассылки')
     date_of_completion = models.DateTimeField(default=timezone.now(), blank=False, verbose_name='Дата рассылки')
-    group = models.ForeignKey(Group, blank=False, default=0, on_delete=models.DO_NOTHING, verbose_name='Группа получателей')
-    sample = models.ForeignKey(Sample, blank=False, default=0, on_delete=models.DO_NOTHING, verbose_name='Шаблон письма')
+    group = models.ForeignKey(Group, blank=False, default=0, on_delete=models.DO_NOTHING,
+                              verbose_name='Группа получателей')
+    sample = models.ForeignKey(Sample, blank=False, default=0, on_delete=models.DO_NOTHING,
+                               verbose_name='Шаблон письма')
 
 
 class Report(models.Model):

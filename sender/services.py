@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
-from django.utils import timezone
-
 from subscriber.models import Subscriber
 from mailganer.tasks import send_mail
 
-def send_group(new_list):
+
+def send_group(new_list, site_url):
     """Отправка писем группе"""
     subscribers = Subscriber.objects.filter(group=new_list.group).only('id')  # Запрос id получателей
-    delta = (new_list.date_of_completion.replace(tzinfo=None) - timezone.now().replace(tzinfo=None)).total_seconds() // 60
-    print(delta)
     for subscriber in subscribers:
         # Передем в Task ссылки на записи БД с данными о получателе и рассылке
-        send_mail.apply_async([subscriber.id, new_list.id], eta=new_list.date_of_completion)
+        send_mail.apply_async([subscriber.id, new_list.id, site_url], eta=new_list.date_of_completion)
 
 
 def set_tzname(request):

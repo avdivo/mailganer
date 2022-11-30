@@ -23,7 +23,7 @@ def mailing_list_page(request):
     mailing_list = MailingList.objects.order_by('-date_of_completion')  # Чтение списка рассылок
     # Подготовка словаря для вывода таблицы рассылок
     now_datetime = timezone.now()
-    table = []
+    table = []  # Данные в шаблон
     string = dict()
     for mailing in mailing_list:
         string['id'] = mailing.id
@@ -42,20 +42,27 @@ def new_list(request):
     if request.method == 'POST':
         # Получены данные для создания новой рассылки
         form = NewListForm(request.POST)
+        site_url = request.META['HTTP_HOST']
         if form.is_valid():
-            send_group(form.save(commit=True))
-            # send_group()
+            send_group(form.save(commit=True), site_url)
             return HttpResponseRedirect('list')
     else:
         form = NewListForm()
     return render(request, 'new_list.html', {'form': form})
 
 
-def open_mail(request, id):
+def report(request, list_id):
+    """Отчет о рассылке с номером полученным в адресной строке"""
+    ml = MailingList.objects.get(id=list_id)
+    table = Report.objects.filter(mailing_list=ml)
+    return render(request, 'mailing_report.html', locals())
+
+
+def open_mail(request, report_id):
     """Подтверждение открытия письма клиентом
     Открытие письма потребует загрузки изображения, которая будет приводить к открытию этой функции"""
-    image = open(os.path.join(settings.STATIC_ROOT, 'img/pixel.jpg'), 'rb')
-    report = Report.objects.get(id=id)
-    report.open = timezone.now()
-    report.save()
+    image = open(os.path.join(settings.STATIC_ROOT, 'img/pixel.png'), 'rb')
+    reports = Report.objects.get(id=report_id)
+    reports.open = timezone.now()
+    reports.save()
     return HttpResponse(image.read(), status=201)

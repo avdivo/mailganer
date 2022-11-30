@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mail:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    networks:
+      redis_net:
+      nginx_net:
+    volumes:
+      - .:/code
+    restart: always
+    ports:
+      - 0.0.0.0:8002:8000
+
+  celery:
+    build: .
+    command: celery -A mailganer worker -l info
+    restart: always
+    networks:
+      redis_net:
+
+networks:
+  redis_net:
+    name: redis_net
+  nginx_net:
+    name: nginx_net
+
